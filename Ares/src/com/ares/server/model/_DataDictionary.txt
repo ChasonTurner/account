@@ -1,0 +1,147 @@
+Table: tb_account
+-------------+--------------+------+-----+---------+---------
+ Field       | Type         | Null | Key | Default | Remarks 
+-------------+--------------+------+-----+---------+---------
+ id          | VARCHAR(36)  | NO   | PRI |         |         
+ type        | INT(10)      | YES  |     |         | 0:企业;1:个人
+ identiyId   | VARCHAR(36)  | YES  |     |         | 帐号ID(有poseidon提供)
+ identiyCode | VARCHAR(50)  | YES  |     |         | 证件号码    
+ phoneNo     | VARCHAR(11)  | YES  |     |         | 电话号码    
+ payCode     | VARCHAR(20)  | YES  |     |         | 统一支付密码  
+ status      | INT(10)      | YES  |     |         | 账户状态码
+-2:失效
+-1:冻结
+0:正常
+1:未激活
+
+ createTime  | DATETIME(19) | YES  |     |         |         
+-------------+--------------+------+-----+---------+---------
+
+Table: tb_account_balance
+------------+--------------+------+-----+---------+---------
+ Field      | Type         | Null | Key | Default | Remarks 
+------------+--------------+------+-----+---------+---------
+ id         | VARCHAR(36)  | NO   | PRI |         |         
+ accountId  | VARCHAR(36)  | YES  |     |         |         
+ type       | INT(10)      | YES  |     |         | 0:人民币，CNY;
+1:美元，USD;
+2:比特比，BitCoin;
+3:绿色值;
+4:乐享黔程积分;
+
+ amount     | INT(10)      | YES  |     |         | 余额      
+ payCode    | VARCHAR(20)  | YES  |     |         | 支付密码    
+ payLevel   | INT(10)      | YES  |     |         | 支付密码等级
+0：登录后即可支付（如积分信息）
+1：输入登录密码支付
+2：输入统一支付密码支付
+3：输入统一支付密码+短信验证支付
+4：输入独立支付密码支付
+5：输入独立支付密码+短信验证支付
+ status     | INT(10)      | YES  |     |         | 账户状态码
+-2:失效
+-1:冻结
+0:正常
+1:未激活
+ createTime | DATETIME(19) | YES  |     |         |         
+ updataTime | DATETIME(19) | YES  |     |         |         
+------------+--------------+------+-----+---------+---------
+
+Table: tb_account_channel
+------------+--------------+------+-----+---------+---------
+ Field      | Type         | Null | Key | Default | Remarks 
+------------+--------------+------+-----+---------+---------
+ id         | VARCHAR(36)  | NO   | PRI |         |         
+ accountId  | VARCHAR(36)  | YES  |     |         | 账户ID    
+ type       | INT(10)      | YES  |     |         | 渠道类型
+0:userId
+1:一卡通;
+2:ETC;
+3:汇联通;
+4:华软空充;
+5:中交智慧;
+6:北京裕福;
+ outId      | VARCHAR(36)  | YES  |     |         | 外部ID    
+ status     | INT(10)      | YES  |     |         | 0:开通;1:关闭
+ createTime | DATETIME(19) | YES  |     |         | 更新时间时间  
+------------+--------------+------+-----+---------+---------
+
+Table: tb_account_update
+--------------+--------------+------+-----+---------+---------
+ Field        | Type         | Null | Key | Default | Remarks 
+--------------+--------------+------+-----+---------+---------
+ id           | VARCHAR(36)  | NO   | PRI |         |         
+ accountId    | VARCHAR(36)  | YES  |     |         | 更新账户的ID 
+ updateType   | INT(10)      | NO   |     |         | 更新信息类型
+0:更新证件号;
+1:更新电话号码;
+2:更新支付密码;
+3:更新人民币
+4:更新美元;
+5:更新比特比;
+6:更新绿色值;
+7:更新乐享黔程积分;
+
+ beforeUpdate | VARCHAR(50)  | YES  |     |         | 更新前内容   
+ afterUpdate  | VARCHAR(50)  | NO   |     |         | 更新后内容   
+ describe     | VARCHAR(255) | YES  |     |         | 更新内容描述  
+ updateTime   | DATETIME(19) | YES  |     |         | 更新时间    
+--------------+--------------+------+-----+---------+---------
+
+Table: tb_flow
+-------------+--------------+------+-----+---------+---------
+ Field       | Type         | Null | Key | Default | Remarks 
+-------------+--------------+------+-----+---------+---------
+ id          | VARCHAR(36)  | NO   | PRI |         |         
+ accountId   | VARCHAR(36)  | YES  |     |         | 账户ID    
+ channelType | INT(10)      | YES  |     |         | 交易渠道    
+ orderId     | VARCHAR(36)  | YES  |     |         | 流水号     
+ balanceType | INT(10)      | YES  |     |         | 金额类型    
+ totalFee    | INT(10)      | YES  |     |         | 金额      
+ transferId  | VARCHAR(36)  | YES  |     |         | 转账信息ID  
+ freezeId    | VARCHAR(36)  | YES  |     |         | 冻结资金信息ID
+ status      | INT(10)      | YES  |     |         | 订单状态    
+ createTime  | DATETIME(19) | YES  |     |         | 订单创建时间  
+ updateTime  | DATETIME(19) | YES  |     |         | 订单更新时间  
+-------------+--------------+------+-----+---------+---------
+
+Table: tb_flow_detail
+------------+---------------+------+-----+---------+---------
+ Field      | Type          | Null | Key | Default | Remarks 
+------------+---------------+------+-----+---------+---------
+ id         | VARCHAR(36)   | NO   | PRI |         |         
+ tradeType  | INT(10)       | YES  |     |         | 交易类型
+0:微信充值
+1:公众号微信充值
+2:手持机微信充值
+3:支付宝充值
+4:银联充值
+5:汇联通充值
+6:工行充值
+6:一卡通圈存
+7:ETC圈存
+8:消费
+9:转账
+ orderId    | VARCHAR(36)   | YES  |     |         | 流水号     
+ totalFee   | INT(10)       | YES  |     |         | 金额      
+ outTradeNo | VARCHAR(36)   | YES  |     |         | 外部交易流水号 
+ attach     | VARCHAR(1024) | YES  |     |         | 附属信息    
+ status     | INT(10)       | YES  |     |         | 订单状态    
+ createTime | DATETIME(19)  | YES  |     |         | 订单创建时间  
+ updateTime | DATETIME(19)  | YES  |     |         | 订单结束时间  
+------------+---------------+------+-----+---------+---------
+
+Table: tb_flow_freeze
+-------------+--------------+------+-----+---------+---------
+ Field       | Type         | Null | Key | Default | Remarks 
+-------------+--------------+------+-----+---------+---------
+ id          | VARCHAR(36)  | NO   | PRI |         |         
+ accountId   | VARCHAR(36)  | NO   |     |         | 账户ID    
+ orderId     | VARCHAR(36)  | NO   |     |         | 流水号     
+ balanceType | INT(10)      | YES  |     |         | 金额类型    
+ totalFee    | INT(10)      | YES  |     |         | 金额      
+ status      | INT(10)      | YES  |     |         | 冻结状态    
+ createTime  | DATETIME(19) | YES  |     |         | 订单创建时间  
+ updateTime  | DATETIME(19) | YES  |     |         | 更新时间    
+-------------+--------------+------+-----+---------+---------
+
